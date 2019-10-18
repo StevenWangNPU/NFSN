@@ -1,0 +1,15 @@
+function [w_h,b_h,w_o,b_o] = BP_NN_newp(x,y,a2,z1,a1,ini_w_h,ini_w_o,ini_b_h,ini_b_o,lr,gamma,p)
+cost = (a2-y);
+S2 = cost;
+dw2 = a1' * S2;
+db2 = sum(S2);
+s = relu_f(z1,1);
+S1 = (S2 * ini_w_o').* s;
+dw1 = x' * S1;
+db1 = sum(S1);
+% dw = diag(0.5./sqrt(sum(ini_w_h.*ini_w_h)));
+% w_h = ini_w_h - lr * (dw1 + lambda * (ini_w_h * dw));
+w_h = ini_w_h - lr * (dw1 + gamma * dL2p(ini_w_h,p));
+b_h = ini_b_h - lr * db1;
+w_o = ini_w_o - lr * dw2;
+b_o = ini_b_o - lr * db2;
